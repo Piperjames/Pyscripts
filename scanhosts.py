@@ -1,3 +1,5 @@
+#!/usr/bin/python3
+
 import nmap
 from sys import argv
 
@@ -5,7 +7,11 @@ def hostinfo(host, fast=False):
     nm = nmap.PortScanner()
     if fast:
         try:
+            scanning = 'progress'
+            slashes = ['\\','|','/','--','\\','|','/','--']
             nm.scan(hosts=host,arguments='-T4 -F',sudo=True)
+            for slash in slashes:
+                print('[%s] Scanning %s' %(slash, host))
             print('-'*30)
             print('Host : %s  State : %s'%(host,nm[host]['status']['state']))
             print('-'*30)
@@ -51,6 +57,9 @@ def hostinfo(host, fast=False):
 
 
 if __name__=='__main__':
-    host = input('Enter host to scan: ')
+    if len(sys.argv):
+        host = sys.argv[1]
+    else:
+        host = input('Enter host to scan: ')
     hostinfo(host)
 

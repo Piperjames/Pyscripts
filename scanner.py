@@ -1,3 +1,5 @@
+#! /usr/bin/python3
+
 from listhosts import gethosts
 from scanhosts import hostinfo
 from sys import argv
