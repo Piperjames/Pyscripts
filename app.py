@@ -3,7 +3,10 @@
 import cherrypy
 import os
 from listhosts import gethosts
+<<<<<<< HEAD
 from scanhosts import hostinfo
+=======
+>>>>>>> f1ce60a788156a189832a523ebf723823a1bac8a
 
 current_dir = os.path.dirname(os.path.abspath(__file__))
 
@@ -25,6 +28,7 @@ class PenSuite(object):
         baseip, netips = hosts
         hostlist = ''
         for ip in netips:
+<<<<<<< HEAD
             hostlist += '<li class="toscan">'+('.'.join((baseip,str(ip))))+'</li>'
         return(hostlist)
 
@@ -33,6 +37,11 @@ class PenSuite(object):
     def hostdetails(self, host):
         pass
 
+=======
+            hostlist += '<li>'+('.'.join((baseip,str(ip))))+'</li>'
+        return(hostlist)
+
+>>>>>>> f1ce60a788156a189832a523ebf723823a1bac8a
 if __name__=='__main__':
     cherrypy.server.socket_host = '0.0.0.0'
     cherrypy.server.socket_port = 1995
