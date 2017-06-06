@@ -14,14 +14,14 @@ $(function(){
 	});
     });
 	
-	$('li.toscan').on('click',function(){
+	$('.iplist ul').on('click','li.toscan',function(){
 		$.get('gethostname',{
 			host: $(this).text()
 		}, function(data){
 			$('.hostname').text(data);
 		});
-		$('.dashboard').hide();
 		$('.ipname').text($(this).text())
 		$('.ipscan').show();
+		$('.dashboard').hide();
 	});
 });
