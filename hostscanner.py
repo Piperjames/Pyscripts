@@ -4,6 +4,7 @@ import socket
 import re
 import sys
 from subprocess import Popen, PIPE
+from pprint import pprint
 import nmap
 
 def gethosts(interface):
@@ -31,15 +32,16 @@ def hostinfo(host, fast=False):
     nm = nmap.PortScanner()
     if fast:
         try:
-            nm.scan(hosts=host, arguments='-T4 -F', sudo=True)
+            nm.scan(hosts=host, arguments='-sV', sudo=True)
             print('-'*30)
             print('Host : %s State : %s'%(host, nm[host]['status']['state']))
             print('-'*30)
             if 'tcp' in nm[host].keys():
-                print('PORT\tSTATE\tSERVICE')
+                print('PORT\tSTATE\tSERVICE\tVERSION')
                 ports = nm[host]['tcp']
                 for key in ports.keys():
-                    print('%s\t%s\t%s'%(key,ports[key]['state'],ports[key]['name']))
+                    print('%s\t%s\t%s\t%s %s'%(key,ports[key]['state'],\
+ports[key]['name'],ports[key]['product'],ports[key]['version']))
                 print('*'*30, '\n')
             else:
                 mac = list(nm[host]['vendor'])
@@ -57,18 +59,15 @@ def hostinfo(host, fast=False):
             print('-'*30)
             print('Host : %s  State : %s'%(host,nm[host]['status']['state']))
             print('-'*30)
-            print('PORT\tSTATE\tSERVICE')
+            print('PORT\tSTATE\tSERVICE\tVERSION')
             ports = nm[host]['tcp']
             for key in ports.keys():
-                print('%s\t%s\t%s'%(key,ports[key]['state'],ports[key]['name']))
+                print('%s\t%s\t%s\t%s %s'%(key,ports[key]['state'],\
+ports[key]['name'],ports[key]['product'], ports[key]['version']))
             print('\nOS DETAILS')
-            osdetails = nm[host]['hostscript'][1]['output']
-            osdetails = osdetails.lstrip('\n')
-            mac = nm[host]['addresses']['mac']
-            vendor = nm[host]['vendor'][mac]
-            print(osdetails)
-            print('MAC Address : %s'%mac)
-            print('Vendor : %s'%vendor)
+            pprint(nm[host]['osmatch'])
+            #print('MAC Address : %s'%mac)
+            #print('Vendor : %s'%vendor)
             print('-'*30, '\n')
         except KeyError:
             print('*'*30, '\n')
